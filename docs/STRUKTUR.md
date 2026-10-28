@@ -16,6 +16,7 @@ Budgetplaner/
 │   │   ├── Models/
 │   │   ├── Services/
 │   │   └── Storage/
+│   ├── Budgetplaner.Konsole/     ← Konsolen-Version (vor der GUI)
 │   └── Budgetplaner.App/         ← WPF-Oberfläche
 │       ├── Converters/
 │       ├── Resources/
@@ -87,6 +88,38 @@ View (XAML)  ⇄  ViewModel  →  Services / Storage (Core)  →  Models
 ```
 
 ---
+
+## 💻 src/Budgetplaner.Konsole/ – Konsolen-Version
+
+Konsolen-App (`net10.0`) mit **Spectre.Console** für Farben, Tabellen und Auswahlmenüs. Hier gibt es nur Ein- und Ausgabe, gerechnet wird in Core. Später ersetzt die GUI dieses Projekt.
+
+| Name | Typ | Erklärung |
+| --- | --- | --- |
+| `Program.cs` | Datei | Startpunkt (Top-Level-Statements): lädt das Profil, zeigt das Menü, ruft je nach Auswahl die passende Klasse auf. |
+| `BuchungErfassen.cs` | Datei | Fragt Typ, Titel, Betrag, Kategorie, Wiederholung und Datum ab, baut die `Buchung`, lässt sie von der `Validierung` prüfen und fügt sie hinzu. |
+| `BuchungenAnzeigen.cs` | Datei | Zeigt alle Buchungen als Tabelle (Einnahmen grün, Ausgaben rot). |
+| `BudgetAnzeigen.cs` | Datei | Zeigt die Monatsübersicht vom `BudgetRechner` inkl. Ampel. |
+| `Anzeige.cs` | Datei | Helfer fürs Formatieren: `CHF 1’234.50`, Datum, Wiederholung als Text. |
+
+Starten: `dotnet run --project src/Budgetplaner.Konsole`
+
+---
+
+## 📦 Aktuelle Dateien in Core
+
+| Datei | Erklärung |
+| --- | --- |
+| `Models/Buchung.cs` | Eine Einnahme oder Ausgabe (einmalig oder wiederkehrend). |
+| `Models/Sparziel.cs` | Ein Sparziel mit Zielbetrag und optionalem Zieldatum. |
+| `Models/BudgetProfil.cs` | Alle Buchungen, Sparziele und Limits. Wird als Ganzes gespeichert. |
+| `Models/BuchungsTyp.cs` | Enum: Einnahme / Ausgabe. |
+| `Models/Wiederholung.cs` | Enum: Einmalig / Wöchentlich / Monatlich / Jährlich. |
+| `Models/AmpelStatus.cs` | Enum: Grün / Gelb / Rot. |
+| `Models/Kategorien.cs` | Standard-Kategorien für Einnahmen und Ausgaben. |
+| `Models/BudgetUebersicht.cs` | Ergebnis vom BudgetRechner für einen Monat (wird nicht gespeichert). |
+| `Services/Validierung.cs` | Prüft Buchungen und Sparziele, gibt Fehlermeldungen zurück. |
+| `Services/BudgetRechner.cs` | Rechnet alles auf einen Monat um, berechnet Überschuss, Budget und Ampel. |
+| `Storage/JsonSpeicher.cs` | Speichert/lädt das Profil als JSON in `%AppData%\Budgetplaner\budget.json`. |
 
 ## ✅ tests/Budgetplaner.Core.Tests/ – die Tests
 

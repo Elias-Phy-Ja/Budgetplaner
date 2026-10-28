@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/Budgetplaner.App/Budgetplaner.App.csproj" />
     <Project Path="src/Budgetplaner.Core/Budgetplaner.Core.csproj" />
+    <Project Path="src/Budgetplaner.Konsole/Budgetplaner.Konsole.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Budgetplaner.Core.Tests/Budgetplaner.Core.Tests.csproj" />
