@@ -50,7 +50,7 @@ while (input != "/exit")
             break;
 
         case "/exit":
-            AnsiConsole.MarkupLine("[deepskyblue2]Tschüss! 👋[/]");
+            AnsiConsole.MarkupLine("[deepskyblue2]Tschüss![/]");
             break;
 
         case "":
