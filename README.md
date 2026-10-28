@@ -1,4 +1,4 @@
-# 💰 Budgetplaner – Vorausschauende Budgetplanung
+# 💰 Budgetplaner Vorausschauende Budgetplanung
 
 Programmierprojekt IMS 2026, Alte Kantonsschule Aarau
 Ausschreibung 2: *Vorausschauende Budgetplanung* (ausgeschrieben von KliLi)
