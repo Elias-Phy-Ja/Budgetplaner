@@ -51,6 +51,7 @@ while (input != "/exit")
 
         case "/exit":
             AnsiConsole.MarkupLine("[deepskyblue2]Tschüss![/]");
+            AnsiConsole.MarkupLine("[red]Programm wird beendet…[/]");
             break;
 
         case "":
