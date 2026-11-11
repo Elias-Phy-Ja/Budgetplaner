@@ -99,6 +99,8 @@ Konsolen-App (`net10.0`) mit **Spectre.Console** für Farben, Tabellen und Auswa
 | `BuchungErfassen.cs` | Datei | Fragt Typ, Titel, Betrag, Kategorie, Wiederholung und Datum ab, baut die `Buchung`, lässt sie von der `Validierung` prüfen und fügt sie hinzu. |
 | `BuchungenAnzeigen.cs` | Datei | Zeigt alle Buchungen als Tabelle (Einnahmen grün, Ausgaben rot). |
 | `BudgetAnzeigen.cs` | Datei | Zeigt die Monatsübersicht vom `BudgetRechner` inkl. Ampel. |
+| `BuchungBearbeiten.cs` | Datei | Buchung auswählen (Pfeiltasten) und ein Feld ändern oder sie nach Rückfrage löschen. |
+| `Eingabe.cs` | Datei | Einlese-Helfer (Text, Betrag mit `TryParse`, Datum), die Erfassen und Bearbeiten teilen. |
 | `Anzeige.cs` | Datei | Helfer fürs Formatieren: `CHF 1’234.50`, Datum, Wiederholung als Text. |
 
 Starten: `dotnet run --project src/Budgetplaner.Konsole`
@@ -119,6 +121,9 @@ Starten: `dotnet run --project src/Budgetplaner.Konsole`
 | `Models/BudgetUebersicht.cs` | Ergebnis vom BudgetRechner für einen Monat (wird nicht gespeichert). |
 | `Services/Validierung.cs` | Prüft Buchungen und Sparziele, gibt Fehlermeldungen zurück. |
 | `Services/BudgetRechner.cs` | Rechnet alles auf einen Monat um, berechnet Überschuss, Budget und Ampel. |
+| `Models/SparzielStatus.cs` | Enum: Erreicht / AufKurs / NichtRealistisch / NichtErreichbar. |
+| `Models/SparzielPrognose.cs` | Ergebnis vom SparzielRechner (Restbetrag, Fortschritt, Prognosedatum, nötig pro Monat). |
+| `Services/SparzielRechner.cs` | Bis wann ist ein Sparziel erreicht? Wie viel muss pro Monat gespart werden? |
 | `Storage/JsonSpeicher.cs` | Speichert/lädt das Profil als JSON in `%AppData%\Budgetplaner\budget.json`. |
 
 ## ✅ tests/Budgetplaner.Core.Tests/ – die Tests
