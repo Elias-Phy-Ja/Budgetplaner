@@ -40,5 +40,50 @@ public static class BudgetAnzeigen
         };
 
         AnsiConsole.MarkupLine("Ampel: " + ampel);
+        Console.WriteLine("");
+
+        ZeigeKategorien(profil);
+
+        // was der Motivator dazu sagt
+        Console.WriteLine("");
+        AnsiConsole.MarkupLine("[bold]Dein Budget-Coach:[/]");
+        foreach (var n in Motivator.Nachrichten(profil, DateTime.Today))
+            Anzeige.ZeigeNachricht(n);
+    }
+
+    // Ausgaben pro Kategorie, rot wenn übers Limit
+    private static void ZeigeKategorien(BudgetProfil profil)
+    {
+        var ausgaben = BudgetRechner.AusgabenProKategorie(profil, DateTime.Today);
+
+        if (ausgaben.Count == 0)
+            return;
+
+        var tabelle = new Table()
+            .Border(TableBorder.Rounded)
+            .Title("Ausgaben pro Kategorie")
+            .AddColumn("Kategorie")
+            .AddColumn(new TableColumn("Ausgegeben").RightAligned())
+            .AddColumn(new TableColumn("Limit").RightAligned());
+
+        foreach (var (kategorie, betrag) in ausgaben.OrderByDescending(k => k.Value))
+        {
+            string limitText = "[grey]–[/]";
+            string betragText = Anzeige.Chf(betrag);
+
+            if (profil.KategorieLimits.TryGetValue(kategorie, out decimal limit))
+            {
+                limitText = Anzeige.Chf(limit);
+
+                if (betrag > limit)
+                    betragText = $"[bold red]{betragText}[/]";
+                else if (betrag >= limit * 0.8m)
+                    betragText = $"[yellow]{betragText}[/]";
+            }
+
+            tabelle.AddRow(Markup.Escape(kategorie), betragText, limitText);
+        }
+
+        AnsiConsole.Write(tabelle);
     }
 }

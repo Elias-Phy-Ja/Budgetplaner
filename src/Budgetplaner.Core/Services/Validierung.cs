@@ -44,6 +44,22 @@ public static class Validierung
         return fehler;
     }
 
+    // gleiche Regeln wie beim Einzahlen
+    public static List<string> PruefeLimit(decimal limit) => PruefeEinzahlung(limit);
+
+    // für "auf Sparziel einzahlen"
+    public static List<string> PruefeEinzahlung(decimal betrag)
+    {
+        var fehler = new List<string>();
+
+        if (betrag <= 0)
+            fehler.Add("Der Betrag muss grösser als 0 sein.");
+        else if (!HatHoechstensZweiNachkommastellen(betrag))
+            fehler.Add("Der Betrag darf höchstens zwei Nachkommastellen haben.");
+
+        return fehler;
+    }
+
     // 12.50 bleibt nach dem Runden 12.50 → ok; 12.505 wird zu 12.50 → nicht ok
     private static bool HatHoechstensZweiNachkommastellen(decimal betrag)
         => Math.Round(betrag, 2) == betrag;

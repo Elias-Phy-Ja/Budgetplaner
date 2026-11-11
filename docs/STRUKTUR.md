@@ -100,6 +100,8 @@ Konsolen-App (`net10.0`) mit **Spectre.Console** für Farben, Tabellen und Auswa
 | `BuchungenAnzeigen.cs` | Datei | Zeigt alle Buchungen als Tabelle (Einnahmen grün, Ausgaben rot). |
 | `BudgetAnzeigen.cs` | Datei | Zeigt die Monatsübersicht vom `BudgetRechner` inkl. Ampel. |
 | `BuchungBearbeiten.cs` | Datei | Buchung auswählen (Pfeiltasten) und ein Feld ändern oder sie nach Rückfrage löschen. |
+| `SparzielMenue.cs` | Datei | Sparziele erfassen, anzeigen (Fortschrittsbalken + Prognose), einzahlen und löschen. |
+| `LimitMenue.cs` | Datei | Monatliche Limits pro Ausgaben-Kategorie setzen oder entfernen. |
 | `Eingabe.cs` | Datei | Einlese-Helfer (Text, Betrag mit `TryParse`, Datum), die Erfassen und Bearbeiten teilen. |
 | `Anzeige.cs` | Datei | Helfer fürs Formatieren: `CHF 1’234.50`, Datum, Wiederholung als Text. |
 
@@ -124,6 +126,8 @@ Starten: `dotnet run --project src/Budgetplaner.Konsole`
 | `Models/SparzielStatus.cs` | Enum: Erreicht / AufKurs / NichtRealistisch / NichtErreichbar. |
 | `Models/SparzielPrognose.cs` | Ergebnis vom SparzielRechner (Restbetrag, Fortschritt, Prognosedatum, nötig pro Monat). |
 | `Services/SparzielRechner.cs` | Bis wann ist ein Sparziel erreicht? Wie viel muss pro Monat gespart werden? |
+| `Models/Nachricht.cs` | `record` für eine Motivator-Nachricht + Enum `NachrichtArt` (Warnung / Hinweis / Feier / Lob). |
+| `Services/Motivator.cs` | Wählt anhand der echten Zahlen Lob, Warnungen, Limit-Hinweise, Sparziel-Meilensteine und den Plus-Streak. |
 | `Storage/JsonSpeicher.cs` | Speichert/lädt das Profil als JSON in `%AppData%\Budgetplaner\budget.json`. |
 
 ## ✅ tests/Budgetplaner.Core.Tests/ – die Tests

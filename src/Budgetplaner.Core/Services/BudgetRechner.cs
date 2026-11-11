@@ -84,4 +84,39 @@ public static class BudgetRechner
 
         return quote >= 0.10m ? AmpelStatus.Gruen : AmpelStatus.Gelb;
     }
+
+    // wie viel pro Kategorie diesen Monat rausgeht, gleiche Regeln wie bei Berechne
+    public static Dictionary<string, decimal> AusgabenProKategorie(BudgetProfil profil, DateTime monat)
+    {
+        var ersterTag = new DateTime(monat.Year, monat.Month, 1);
+        var letzterTag = ersterTag.AddMonths(1).AddDays(-1);
+
+        var summen = new Dictionary<string, decimal>();
+
+        foreach (var buchung in profil.Buchungen)
+        {
+            if (buchung.Typ != BuchungsTyp.Ausgabe)
+                continue;
+
+            decimal betrag;
+
+            if (buchung.Wiederholung == Wiederholung.Einmalig)
+            {
+                if (buchung.Datum.Date < ersterTag || buchung.Datum.Date > letzterTag)
+                    continue;
+                betrag = buchung.Betrag;
+            }
+            else
+            {
+                if (buchung.Datum.Date > letzterTag)
+                    continue;
+                betrag = ProMonat(buchung);
+            }
+
+            // GetValueOrDefault gibt 0 wenn die Kategorie noch nicht drin ist
+            summen[buchung.Kategorie] = summen.GetValueOrDefault(buchung.Kategorie) + betrag;
+        }
+
+        return summen.ToDictionary(k => k.Key, k => Math.Round(k.Value, 2));
+    }
 }

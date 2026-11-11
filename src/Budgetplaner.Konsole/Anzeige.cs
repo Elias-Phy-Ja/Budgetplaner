@@ -26,4 +26,40 @@ public static class Anzeige
 
     public static void Fehler(string text) =>
         Spectre.Console.AnsiConsole.MarkupLine($"[red]{Spectre.Console.Markup.Escape(text)}[/]");
+
+    // farbiger Text je nach Status
+    public static string SparzielStatusText(SparzielStatus status) => status switch
+    {
+        SparzielStatus.Erreicht => "[bold green]🎉 Erreicht![/]",
+        SparzielStatus.AufKurs => "[green]Auf Kurs[/]",
+        SparzielStatus.NichtRealistisch => "[yellow]Zieldatum so nicht realistisch[/]",
+        SparzielStatus.NichtErreichbar => "[red]Mit dem aktuellen Budget nicht erreichbar[/]",
+        _ => status.ToString()
+    };
+
+    // [██████░░░░░░] als Text, breite = Anzahl Zeichen
+    public static string Fortschrittsbalken(decimal anteil, int breite = 20)
+    {
+        int voll = (int)Math.Round(anteil * breite);
+        voll = Math.Clamp(voll, 0, breite);
+
+        return "[green]" + new string('█', voll) + "[/][grey]" + new string('░', breite - voll) + "[/]";
+    }
+
+    // Motivator-Nachricht in der passenden Farbe
+    public static void ZeigeNachricht(Nachricht n)
+    {
+        string text = Spectre.Console.Markup.Escape(n.Text);
+
+        string zeile = n.Art switch
+        {
+            NachrichtArt.Warnung => $"[red]⚠  {text}[/]",
+            NachrichtArt.Hinweis => $"[yellow]💡 {text}[/]",
+            NachrichtArt.Feier => $"[magenta]{text}[/]",
+            NachrichtArt.Lob => $"[green]👍 {text}[/]",
+            _ => text
+        };
+
+        Spectre.Console.AnsiConsole.MarkupLine(zeile);
+    }
 }

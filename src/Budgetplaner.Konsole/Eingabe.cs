@@ -57,4 +57,42 @@ public static class Eingabe
             Anzeige.Fehler("Ungültiges Datum. Beispiel: 28.10.2026");
         }
     }
+
+    // leer = standard (z.B. 0 bei "schon gespart")
+    public static decimal LeseBetragOptional(string frage, decimal standard)
+    {
+        while (true)
+        {
+            AnsiConsole.Markup($"[purple]{Markup.Escape(frage)}[/]");
+            string eingabe = (Console.ReadLine() ?? "").Trim();
+
+            if (eingabe == "")
+                return standard;
+
+            if (decimal.TryParse(eingabe.Replace(',', '.'), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal betrag))
+                return betrag;
+
+            Anzeige.Fehler("Das ist keine Zahl. Beispiel: 12.50");
+        }
+    }
+
+    // leer = kein Datum (null)
+    public static DateTime? LeseDatumOptional(string frage)
+    {
+        string[] formate = { "d.M.yyyy", "dd.MM.yyyy" };
+
+        while (true)
+        {
+            AnsiConsole.Markup($"[purple]{Markup.Escape(frage)}[/]");
+            string eingabe = (Console.ReadLine() ?? "").Trim();
+
+            if (eingabe == "")
+                return null;
+
+            if (DateTime.TryParseExact(eingabe, formate, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime datum))
+                return datum;
+
+            Anzeige.Fehler("Ungültiges Datum. Beispiel: 15.03.2027");
+        }
+    }
 }
