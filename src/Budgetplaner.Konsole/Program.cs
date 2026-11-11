@@ -24,6 +24,8 @@ while (input != "/exit")
     Console.WriteLine("1) Buchung erfassen");
     Console.WriteLine("2) Alle Buchungen anzeigen");
     Console.WriteLine("3) Budget-Übersicht");
+    Console.WriteLine("4) Buchung bearbeiten");
+    Console.WriteLine("5) Buchung löschen");
     Console.WriteLine("/exit um das Programm zu beenden.");
     Console.WriteLine("");
     AnsiConsole.Markup("[purple]> [/]");
@@ -47,6 +49,16 @@ while (input != "/exit")
 
         case "3":
             BudgetAnzeigen.Ausfuehren(profil);
+            break;
+
+        case "4":
+            if (BuchungBearbeiten.Bearbeiten(profil))
+                JsonSpeicher.Speichern(profil, pfad);
+            break;
+
+        case "5":
+            if (BuchungBearbeiten.Loeschen(profil))
+                JsonSpeicher.Speichern(profil, pfad);
             break;
 
         case "/exit":
