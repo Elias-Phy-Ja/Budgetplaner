@@ -62,4 +62,12 @@ public static class Anzeige
 
         Spectre.Console.AnsiConsole.MarkupLine(zeile);
     }
+
+    public static string AmpelText(AmpelStatus ampel) => ampel switch
+    {
+        AmpelStatus.Gruen => "[bold green]● Grün[/]",
+        AmpelStatus.Gelb => "[bold yellow]● Gelb[/]",
+        AmpelStatus.Rot => "[bold red]● Rot[/]",
+        _ => ""
+    };
 }

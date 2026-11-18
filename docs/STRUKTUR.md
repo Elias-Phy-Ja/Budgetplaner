@@ -95,7 +95,8 @@ Konsolen-App (`net10.0`) mit **Spectre.Console** für Farben, Tabellen und Auswa
 
 | Name | Typ | Erklärung |
 | --- | --- | --- |
-| `Program.cs` | Datei | Startpunkt (Top-Level-Statements): lädt das Profil, zeigt das Menü, ruft je nach Auswahl die passende Klasse auf. |
+| `Program.cs` | Datei | Startpunkt (Top-Level-Statements): lädt das Profil, startet beim ersten Mal den Assistenten, zeigt das Hauptmenü (Pfeiltasten, gruppiert) und ruft die passende Klasse auf. |
+| `Assistent.cs` | Datei | Einrichtungsassistent (Basisstufe): 4 Schritte Einnahmen → Fixkosten → Sparziel → Zusammenfassung, mit Zurück, Live-Vorschau und Speichern erst am Schluss. Startet beim ersten Start automatisch. |
 | `BuchungErfassen.cs` | Datei | Fragt Typ, Titel, Betrag, Kategorie, Wiederholung und Datum ab, baut die `Buchung`, lässt sie von der `Validierung` prüfen und fügt sie hinzu. |
 | `BuchungenAnzeigen.cs` | Datei | Zeigt alle Buchungen als Tabelle (Einnahmen grün, Ausgaben rot). |
 | `BudgetAnzeigen.cs` | Datei | Zeigt die Monatsübersicht vom `BudgetRechner` inkl. Ampel. |

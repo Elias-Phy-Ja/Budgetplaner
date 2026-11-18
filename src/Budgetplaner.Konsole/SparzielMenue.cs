@@ -44,7 +44,7 @@ public static class SparzielMenue
 
         if (profil.Sparziele.Count == 0)
         {
-            AnsiConsole.MarkupLine("[grey]Noch keine Sparziele. Wähle im Menü 6, um eins zu erfassen.[/]");
+            AnsiConsole.MarkupLine("[grey]Noch keine Sparziele. Wähle im Menü „Sparziel erfassen“.[/]");
             return;
         }
 
@@ -102,7 +102,7 @@ public static class SparzielMenue
         if (ziel == null)
             return false;
 
-        if (!AnsiConsole.Confirm($"[red]„{Markup.Escape(ziel.Name)}“ wirklich löschen?[/]", defaultValue: false))
+        if (!Eingabe.JaNein($"[red]„{Markup.Escape(ziel.Name)}“ wirklich löschen?[/]", defaultValue: false))
         {
             AnsiConsole.MarkupLine("[grey]Nichts gelöscht.[/]");
             return false;

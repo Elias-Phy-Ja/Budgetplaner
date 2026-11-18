@@ -12,7 +12,7 @@ public static class BuchungenAnzeigen
 
         if (profil.Buchungen.Count == 0)
         {
-            AnsiConsole.MarkupLine("[grey]Noch keine Buchungen erfasst. Wähle im Menü 1, um eine zu erfassen.[/]");
+            AnsiConsole.MarkupLine("[grey]Noch keine Buchungen erfasst. Wähle im Menü „Buchung erfassen“.[/]");
             return;
         }
 

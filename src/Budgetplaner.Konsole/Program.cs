@@ -12,10 +12,33 @@ Console.OutputEncoding = Encoding.UTF8;
 string pfad = JsonSpeicher.StandardPfad;
 BudgetProfil profil = JsonSpeicher.Laden(pfad);
 
-string input = "";
+// Menüpunkte als Konstanten, so heissen Menü und switch sicher gleich
+const string BuchungErfassenText = "Buchung erfassen";
+const string BuchungenAnzeigenText = "Alle Buchungen anzeigen";
+const string BuchungBearbeitenText = "Buchung bearbeiten";
+const string BuchungLoeschenText = "Buchung löschen";
+const string UebersichtText = "Budget-Übersicht";
+const string LimitsText = "Kategorie-Limits festlegen";
+const string SparzielErfassenText = "Sparziel erfassen";
+const string SparzieleAnzeigenText = "Sparziele anzeigen";
+const string EinzahlenText = "Auf Sparziel einzahlen";
+const string SparzielLoeschenText = "Sparziel löschen";
+const string AssistentText = "Einrichtungsassistent starten";
+const string BeendenText = "Beenden";
 
-// Menü läuft so lange, bis /exit eingegeben wird
-while (input != "/exit")
+// erster Start (noch gar nichts drin) gleich mit dem Assistenten loslegen
+if (profil.Buchungen.Count == 0 && profil.Sparziele.Count == 0)
+{
+    if (Assistent.Starten(profil, ersterStart: true))
+    {
+        JsonSpeicher.Speichern(profil, pfad);
+        WarteAufEnter();
+    }
+}
+
+bool laeuft = true;
+
+while (laeuft)
 {
     Console.Clear();
 
@@ -30,97 +53,91 @@ while (input != "/exit")
         Console.WriteLine("");
     }
 
-    Console.WriteLine("Was möchten Sie machen?");
-    Console.WriteLine("1) Buchung erfassen");
-    Console.WriteLine("2) Alle Buchungen anzeigen");
-    Console.WriteLine("3) Budget-Übersicht");
-    Console.WriteLine("4) Buchung bearbeiten");
-    Console.WriteLine("5) Buchung löschen");
-    Console.WriteLine("");
-    Console.WriteLine("6) Sparziel erfassen");
-    Console.WriteLine("7) Sparziele anzeigen");
-    Console.WriteLine("8) Auf Sparziel einzahlen");
-    Console.WriteLine("9) Sparziel löschen");
-    Console.WriteLine("10) Kategorie-Limits festlegen");
-    Console.WriteLine("");
-    Console.WriteLine("/exit um das Programm zu beenden.");
-    Console.WriteLine("");
-    AnsiConsole.Markup("[purple]> [/]");
-
-    string? rawInput = Console.ReadLine();
-    input = (rawInput ?? "").Trim().ToLower();
+    // Menü mit Pfeiltasten statt Nummern eintippen, Gruppen nur als Überschrift
+    string auswahl = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Was möchtest du machen?")
+            .PageSize(20)
+            .Mode(SelectionMode.Leaf)
+            .AddChoiceGroup("Buchungen", BuchungErfassenText, BuchungenAnzeigenText, BuchungBearbeitenText, BuchungLoeschenText)
+            .AddChoiceGroup("Budget", UebersichtText, LimitsText)
+            .AddChoiceGroup("Sparziele", SparzielErfassenText, SparzieleAnzeigenText, EinzahlenText, SparzielLoeschenText)
+            .AddChoiceGroup("Sonstiges", AssistentText, BeendenText));
 
     Console.Clear();
 
-    switch (input)
+    // bei allem was etwas ändert: nur speichern, wenn wirklich was geändert wurde
+    switch (auswahl)
     {
-        case "1":
-            // nur speichern, wenn wirklich etwas dazugekommen ist
+        case BuchungErfassenText:
             if (BuchungErfassen.Ausfuehren(profil))
                 JsonSpeicher.Speichern(profil, pfad);
             break;
 
-        case "2":
+        case BuchungenAnzeigenText:
             BuchungenAnzeigen.Ausfuehren(profil);
             break;
 
-        case "3":
-            BudgetAnzeigen.Ausfuehren(profil);
-            break;
-
-        case "4":
+        case BuchungBearbeitenText:
             if (BuchungBearbeiten.Bearbeiten(profil))
                 JsonSpeicher.Speichern(profil, pfad);
             break;
 
-        case "5":
+        case BuchungLoeschenText:
             if (BuchungBearbeiten.Loeschen(profil))
                 JsonSpeicher.Speichern(profil, pfad);
             break;
 
-        case "6":
-            if (SparzielMenue.Erfassen(profil))
-                JsonSpeicher.Speichern(profil, pfad);
+        case UebersichtText:
+            BudgetAnzeigen.Ausfuehren(profil);
             break;
 
-        case "7":
-            SparzielMenue.Anzeigen(profil);
-            break;
-
-        case "8":
-            if (SparzielMenue.Einzahlen(profil))
-                JsonSpeicher.Speichern(profil, pfad);
-            break;
-
-        case "9":
-            if (SparzielMenue.Loeschen(profil))
-                JsonSpeicher.Speichern(profil, pfad);
-            break;
-
-        case "10":
+        case LimitsText:
             if (LimitMenue.Festlegen(profil))
                 JsonSpeicher.Speichern(profil, pfad);
             break;
 
-        case "/exit":
+        case SparzielErfassenText:
+            if (SparzielMenue.Erfassen(profil))
+                JsonSpeicher.Speichern(profil, pfad);
+            break;
+
+        case SparzieleAnzeigenText:
+            SparzielMenue.Anzeigen(profil);
+            break;
+
+        case EinzahlenText:
+            if (SparzielMenue.Einzahlen(profil))
+                JsonSpeicher.Speichern(profil, pfad);
+            break;
+
+        case SparzielLoeschenText:
+            if (SparzielMenue.Loeschen(profil))
+                JsonSpeicher.Speichern(profil, pfad);
+            break;
+
+        case AssistentText:
+            if (Assistent.Starten(profil, ersterStart: false))
+                JsonSpeicher.Speichern(profil, pfad);
+            else
+                continue; // abgebrochen direkt zurück ins Menü
+            break;
+
+        case BeendenText:
             AnsiConsole.MarkupLine("[deepskyblue2]Tschüss![/]");
             AnsiConsole.MarkupLine("[red]Programm wird beendet…[/]");
-            break;
-
-        case "":
-            AnsiConsole.MarkupLine("[red]Dieser Input ist Leer![/]");
-            break;
-
-        default:
-            AnsiConsole.MarkupLine($"[red]Unbekannte Eingabe:[/] {Markup.Escape(input)}");
+            laeuft = false;
             break;
     }
 
     // Warten, damit man das Ergebnis lesen kann, bevor das Menü wieder kommt
-    if (input != "/exit")
-    {
-        Console.WriteLine("");
-        AnsiConsole.MarkupLine("[grey]Weiter mit Enter …[/]");
-        Console.ReadLine();
-    }
+    if (laeuft)
+        WarteAufEnter();
+}
+
+static void WarteAufEnter()
+{
+    Console.WriteLine("");
+    AnsiConsole.MarkupLine("[grey]Weiter mit Enter …[/]");
+    Console.ReadLine();
 }

@@ -95,4 +95,18 @@ public static class Eingabe
             Anzeige.Fehler("Ungültiges Datum. Beispiel: 15.03.2027");
         }
     }
+
+    // Ja/Nein-Frage mit j/n statt y/n
+    public static bool JaNein(string frage, bool defaultValue = false)
+    {
+        var prompt = new ConfirmationPrompt(frage)
+        {
+            DefaultValue = defaultValue,
+            Yes = 'j',
+            No = 'n',
+            InvalidChoiceMessage = "[red]Bitte j oder n eingeben[/]"
+        };
+
+        return AnsiConsole.Prompt(prompt);
+    }
 }

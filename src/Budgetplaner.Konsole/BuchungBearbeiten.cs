@@ -93,7 +93,7 @@ public static class BuchungBearbeiten
         AnsiConsole.MarkupLine(BuchungText(buchung));
 
         // lieber nochmal fragen, löschen kann man nicht rückgängig machen
-        if (!AnsiConsole.Confirm("[red]Wirklich löschen?[/]", defaultValue: false))
+        if (!Eingabe.JaNein("[red]Wirklich löschen?[/]", defaultValue: false))
         {
             AnsiConsole.MarkupLine("[grey]Nichts gelöscht.[/]");
             return false;
